@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>1º A — Central da Turma</title>
+<meta name="description" content="Central de novidades e organização do 1º Ano A: provas, trabalhos, eventos, ETEC, ENEM e links úteis.">
+<link rel="stylesheet" href="css/styles.css">
+
+<!--
+  ============================================================
+  ESTRUTURA DO PROJETO
+  index.html          este arquivo
+  css/styles.css       toda a aparência do site
+  js/data.js           EDITE AQUI para trocar eventos, links e o código do Classroom
+  js/icons.js          biblioteca de ícones (sem emojis)
+  js/app.js            lógica: tema, contadores, filtros, busca, checklist
+
+  PWA (futuro, opcional):
+  - Aqui poderia entrar <link rel="manifest" href="manifest.json">
+  - Aqui poderia ser referenciado um ícone para instalação no celular
+  - Um Service Worker poderia ser registrado em js/app.js
+  Nada disso é necessário para o site funcionar hoje.
+  ============================================================
+-->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-bar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">1A</div>
+      <div class="brand-copy">
+        <h1>Central da Turma</h1>
+        <p>1º Ano A</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="today-tag" id="todayChip"></span>
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema claro/escuro" title="Alternar tema"></button>
+    </div>
+  </div>
+
+  <div class="container toolbar">
+    <div class="search-field">
+      <span class="icon" data-icon="search" aria-hidden="true"></span>
+      <input type="text" id="searchInput" placeholder="Pesquisar na central..." aria-label="Pesquisar na central">
+    </div>
+    <div class="filter-row" role="tablist" aria-label="Filtrar por categoria">
+      <button class="filter-chip active" data-filter="todos">Todos</button>
+      <button class="filter-chip" data-filter="provas">Provas</button>
+      <button class="filter-chip" data-filter="trabalhos">Trabalhos</button>
+      <button class="filter-chip" data-filter="eventos">Eventos</button>
+      <button class="filter-chip" data-filter="lembretes">Lembretes</button>
+      <button class="filter-chip" data-filter="estudos">Estudos</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">Novidades e organização da semana</p>
+        <h2 id="heroTitle">Tudo o que a turma precisa saber, em um só lugar.</h2>
+        <p class="lead">Provas, trabalhos, prazos e links importantes do 1º Ano A, organizados para você não perder nenhuma data.</p>
+      </div>
+      <div class="hero-photo">
+        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=1200&q=75&auto=format&fit=crop" alt="Estudante carregando material de estudo">
+        <div class="caption">Organização é o primeiro passo para um bom semestre.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRÓXIMO EVENTO + CONTADOR ================= -->
+  <section aria-labelledby="dashTopLabel">
+    <h2 id="dashTopLabel" class="sr-only">Resumo</h2>
+    <div class="dashboard-top">
+      <div class="next-event" id="nextEventCard">
+        <div>
+          <div class="label"><span data-icon="next" aria-hidden="true"></span> Próximo evento</div>
+          <div class="title" id="nextEventTitle">Carregando…</div>
+          <div class="meta" id="nextEventDate"></div>
+        </div>
+        <div class="days">
+          <div class="num" id="nextEventDays">–</div>
+          <div class="unit" id="nextEventDaysLabel">dias</div>
+        </div>
+      </div>
+
+      <div class="countdown-panel" id="provaoSection">
+        <div class="kicker"><span data-icon="clock" aria-hidden="true"></span> Contagem regressiva</div>
+        <h2>Provão Paulista — 1º Ano</h2>
+        <div class="dates">12 e 13 de novembro de 2026</div>
+        <div id="provaoCountdownWrap">
+          <div class="countdown-grid" id="provaoGrid">
+            <div class="countdown-cell"><div class="val" id="cdDays">--</div><div class="unit">DIAS</div></div>
+            <div class="countdown-cell"><div class="val" id="cdHours">--</div><div class="unit">HORAS</div></div>
+            <div class="countdown-cell"><div class="val" id="cdMinutes">--</div><div class="unit">MIN</div></div>
+            <div class="countdown-cell"><div class="val" id="cdSeconds">--</div><div class="unit">SEG</div></div>
+          </div>
+          <div class="countdown-msg">Cada dia de preparação conta.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ESTA SEMANA ================= -->
+  <section aria-labelledby="semanaLabel">
+    <div class="section-head">
+      <h2 id="semanaLabel">Esta semana</h2>
+    </div>
+    <div class="grid grid-3" id="semanaGrid">
+
+      <div class="card" data-card data-cat="eventos" data-search="feriado independencia brasil 7 setembro">
+        <div class="card-head">
+          <div class="card-icon" data-icon="flag" aria-hidden="true"></div>
+          <div>
+            <div class="card-title">Independência do Brasil</div>
+            <div class="card-sub">Feriado — 7 de setembro</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <span class="badge badge-informacao"><span class="bdot"></span>Informação</span>
+        </div>
+      </div>
+
+      <div class="card" data-card data-cat="provas eventos" data-search="simulado 10 setembro prova">
+        <div class="card-head">
+          <div class="card-icon" data-icon="exam" aria-hidden="true"></div>
+          <div>
+            <div class="card-title">Simulado</div>
+            <div class="card-sub">10 de setembro de 2026</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <span class="badge badge-importante"><span class="bdot"></span>Importante</span>
+        </div>
+      </div>
+
+      <div class="card" data-card data-cat="trabalhos eventos" data-search="sociologia apresentacao 10 setembro">
+        <div class="card-head">
+          <div class="card-icon" data-icon="users" aria-hidden="true"></div>
+          <div>
+            <div class="card-title">Apresentação de Sociologia</div>
+            <div class="card-sub">10 de setembro de 2026</div>
+          </div>
+        </div>
+        <div class="card-body" style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="badge badge-importante"><span class="bdot"></span>Importante</span>
+          <span class="badge badge-tag">Nesta semana</span>
+        </div>
+      </div>
+
+      <div class="card" data-card data-cat="lembretes estudos" data-search="portugues licao lembrete">
+        <div class="card-head">
+          <div class="card-icon" data-icon="book" aria-hidden="true"></div>
+          <div style="flex:1;">
+            <div class="task-row">
+              <button class="task-check" id="taskCheckPortugues" aria-pressed="false" aria-label="Marcar lição de Português como concluída"></button>
+              <div>
+                <div class="card-title task-title" id="taskTitlePortugues">Lição de Português</div>
+                <div class="card-sub">Terminar a lição pendente de sexta-feira</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <span class="badge badge-lembrete" id="taskBadgePortugues"><span class="bdot"></span>Lembrete</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= PRÓXIMAS AVALIAÇÕES ================= -->
+  <section aria-labelledby="avaliacoesLabel">
+    <div class="section-head">
+      <h2 id="avaliacoesLabel">Próximas avaliações</h2>
+      <span class="hint">Dias calculados automaticamente</span>
+    </div>
+    <div class="grid" id="examList"></div>
+  </section>
+
+  <!-- ================= AVISOS IMPORTANTES ================= -->
+  <section aria-labelledby="avisosLabel">
+    <div class="section-head">
+      <h2 id="avisosLabel">Avisos importantes</h2>
+    </div>
+    <div class="grid grid-2">
+
+      <div class="card" data-card data-cat="trabalhos" data-search="filosofia trabalho compensacao faltas classroom">
+        <div class="card-head">
+          <div class="card-icon" data-icon="book" aria-hidden="true"></div>
+          <div>
+            <div class="card-title">Filosofia — Trabalho de Compensação de Faltas</div>
+            <div class="card-body" style="margin-top:6px;">O trabalho já está disponível no Google Sala de Aula.</div>
+          </div>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <span class="badge badge-urgente"><span class="bdot"></span>Urgente</span>
+          <a class="btn btn-primary" href="https://classroom.google.com/" target="_blank" rel="noopener">
+            Abrir Google Sala de Aula
+          </a>
+        </div>
+      </div>
+
+      <div class="card" data-card data-cat="trabalhos eventos" data-search="sociologia apresentacao simulado mesma semana">
+        <div class="card-head">
+          <div class="card-icon" data-icon="users" aria-hidden="true"></div>
+          <div>
+            <div class="card-title">Apresentação de Sociologia</div>
+            <div class="card-body" style="margin-top:6px;">10/09/2026 — ocorre no mesmo dia do Simulado. Organize os estudos com atenção.</div>
+          </div>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="badge badge-importante"><span class="bdot"></span>Importante</span>
+          <span class="badge badge-tag">Nesta semana</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= ETEC ================= -->
+  <section aria-labelledby="etecLabel">
+    <div class="section-head">
+      <h2 id="etecLabel">ETEC</h2>
+    </div>
+    <div class="split-panel">
+      <div class="card" data-card data-cat="estudos" data-search="etec inscricao curso tecnico">
+        <div class="card-head">
+          <div class="card-icon" data-icon="cap" aria-hidden="true"></div>
+          <div>
+            <div class="card-title">As inscrições da ETEC já começaram</div>
+            <div class="card-body">Se você pretende fazer um curso técnico, fique atento aos prazos de inscrição e ao processo seletivo.</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <!-- EDITE AQUI: link oficial da ETEC em js/data.js (constante ETEC_LINK) -->
+          <a class="btn btn-outline btn-block" id="etecLinkBtn" href="#">Ver informações da ETEC</a>
+          <p class="card-sub" style="margin-top:8px;">Link oficial ainda não configurado — será adicionado assim que disponível.</p>
+        </div>
+      </div>
+      <div class="section-photo">
+        <img src="https://images.unsplash.com/photo-1571260898704-93d166ca769e?w=1000&q=75&auto=format&fit=crop" alt="Estudantes caminhando em direção ao campus">
+        <div class="tag">Cursos técnicos abrem novas frentes de carreira</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ENEM ================= -->
+  <section aria-labelledby="enemLabel">
+    <div class="section-head">
+      <h2 id="enemLabel">ENEM</h2>
+    </div>
+    <div class="split-panel">
+      <div class="section-photo">
+        <img src="https://images.unsplash.com/photo-1571260898938-0fe5057e7208?w=1000&q=75&auto=format&fit=crop" alt="Estudante concentrada revisando anotações">
+        <div class="tag">Constância na revisão faz a diferença</div>
+      </div>
+      <div class="grid">
+        <div class="card" data-card data-cat="estudos" data-search="enem preparacao datas">
+          <div class="card-head">
+            <div class="card-icon" data-icon="target" aria-hidden="true"></div>
+            <div>
+              <div class="card-title">Preparação para o ENEM</div>
+              <div class="card-sub">Datas, lembretes e evolução dos estudos</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-card data-cat="lembretes estudos" data-search="redacao pratica enem">
+          <div class="card-head">
+            <div class="card-icon" data-icon="pencil" aria-hidden="true"></div>
+            <div>
+              <div class="card-title">Redação</div>
+              <div class="card-sub">Pratique com frequência e acompanhe sua evolução</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="badge badge-lembrete"><span class="bdot"></span>Lembrete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-card data-cat="estudos" data-search="cursinhos enem plataformas exercicios" style="margin-top:14px;">
+      <div class="card-head">
+        <div class="card-icon" data-icon="book" aria-hidden="true"></div>
+        <div>
+          <div class="card-title">Cursinhos e plataformas recomendadas</div>
+          <div class="card-sub">Links serão adicionados conforme a turma indicar</div>
+        </div>
+      </div>
+      <!-- EDITE AQUI: preencha as urls em js/data.js (array ENEM_LINKS) -->
+      <div id="enemLinksList" style="display:flex; flex-direction:column; gap:8px; margin-top:14px;"></div>
+    </div>
+  </section>
+
+  <!-- ================= PREPARAÇÃO ETEC ================= -->
+  <section aria-labelledby="prepEtecLabel">
+    <div class="section-head">
+      <h2 id="prepEtecLabel">Preparação para a ETEC</h2>
+      <span class="hint">Materiais em breve</span>
+    </div>
+    <div class="split-panel">
+      <div class="card" data-card data-cat="estudos" data-search="matematica portugues ciencias historia geografia exercicios provas anteriores etec">
+        <!-- EDITE AQUI: preencha as urls em js/data.js (array ETEC_PREP) -->
+        <div class="chip-list" id="etecPrepList"></div>
+      </div>
+      <div class="section-photo">
+        <img src="https://images.unsplash.com/photo-1571260898218-97850999cc7e?w=1000&q=75&auto=format&fit=crop" alt="Grupo de estudantes estudando juntas">
+        <div class="tag">Estudar em grupo ajuda a revisar mais rápido</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GOOGLE SALA DE AULA ================= -->
+  <section aria-labelledby="classroomLabel">
+    <div class="section-head">
+      <h2 id="classroomLabel">Google Sala de Aula</h2>
+    </div>
+    <div class="split-panel">
+      <div class="card" data-card data-cat="estudos" data-search="quimica classroom codigo turma google sala de aula">
+        <div class="card-head">
+          <div class="card-icon" data-icon="flask" aria-hidden="true"></div>
+          <div>
+            <div class="card-title" id="classroomSubject">Química</div>
+            <div class="card-sub">Código da turma no Google Sala de Aula</div>
+          </div>
+        </div>
+        <!-- EDITE AQUI: matéria/código em js/data.js (objeto CLASSROOM) -->
+        <div class="code-box">
+          <span class="code" id="classroomCode">ltnm2mjn</span>
+          <div style="display:flex; align-items:center;">
+            <button class="btn btn-outline" id="copyCodeBtn"><span data-icon="copy" aria-hidden="true"></span>&nbsp;Copiar código</button>
+            <span class="copy-feedback" id="copyFeedback">Código copiado.</span>
+          </div>
+        </div>
+        <a class="btn btn-primary btn-block" style="margin-top:14px;" id="openClassroomBtn" href="https://classroom.google.com/" target="_blank" rel="noopener">
+          Abrir Google Sala de Aula
+        </a>
+      </div>
+      <div class="section-photo">
+        <img src="https://images.unsplash.com/photo-1571260899050-171e1080a30c?w=1000&q=75&auto=format&fit=crop" alt="Estudante utilizando notebook para acompanhar a sala de aula virtual">
+        <div class="tag">Acompanhe as atividades também pelo computador</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CALENDÁRIO ================= -->
+  <section aria-labelledby="calendarioLabel">
+    <div class="section-head">
+      <h2 id="calendarioLabel">Calendário</h2>
+    </div>
+    <div class="card">
+      <div class="timeline" id="calendarTimeline"></div>
+    </div>
+  </section>
+
+  <!-- ================= AGENDA DA TURMA ================= -->
+  <section aria-labelledby="agendaLabel">
+    <div class="section-head">
+      <h2 id="agendaLabel">Agenda da turma</h2>
+    </div>
+    <div class="stats-grid" id="statsGrid"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="f-title">1º A — Central da Turma</div>
+    <div class="f-tag">Organização para não perder nenhum prazo.</div>
+    <div class="f-updated">Última atualização: 05/09/2026</div>
+    <div class="f-note">Informações podem ser atualizadas conforme novos avisos forem divulgados.</div>
+  </div>
+</footer>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
